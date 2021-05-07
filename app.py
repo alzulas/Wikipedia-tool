@@ -119,7 +119,7 @@ def grab_all_history(url, topic, df_all_history):
 
 @app.route('/')
 def index():
-    links = get_links()
+    allLinks = get_links()
     df_all_history = pd.DataFrame(columns=['Page', 'Topic', 'Date of Change', 'User', 'Bytes', 'Number of Changes', 'Comments', 'Tags', 'Link To Diff'])
     for topic in tqdm(allLinks):
         url = 'https://en.wikipedia.org/w/index.php?title=:' + topic[6:] + '&action=history'
