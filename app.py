@@ -42,12 +42,11 @@ def get_links():
 def grab_all_history(url, topic, df_all_history):
     print(url)
     dif_url = None
-    link_still_there = True
     page_no = 1
     yesterday = datetime.now() - timedelta(days = 2)
     latest_date = datetime.now()
     # While statement loops through all pages of the change history
-    while latest_date > yesterday:
+   """ while latest_date > yesterday:
         print("while start")
         now = datetime.now()
         print("Starting page " + str(page_no) + " at " + now.strftime("%m/%d/%Y, %H:%M:%S"))
@@ -114,7 +113,7 @@ def grab_all_history(url, topic, df_all_history):
             if str(a_tag).__contains__('mw-nextlink'):
                 url = 'https://en.wikipedia.org' + str(a_tag.attrs['href'])
         # If no next page, break while loop
-        link_still_there = False
+        """
     return(df_all_history)
 
 @app.route('/')
