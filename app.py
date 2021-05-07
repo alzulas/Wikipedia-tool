@@ -33,7 +33,7 @@ def get_links():
                     if various_not_allowed[1] not in link.attrs['href']:
                         if various_not_allowed[2] not in link.attrs['href']:
                             if various_not_allowed[3] not in link.attrs['href']:
-                                allLinks.append(link.attrs['href'])
+                                allLinks.append('https://en.wikipedia.org' + link.attrs['href'])
     del allLinks[0]
     allLinks = allLinks[:-26]
     #print(allLinks)
