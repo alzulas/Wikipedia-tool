@@ -8,9 +8,7 @@ jinja2
 pip
 simplejson
 python-dotenv
-urllib
 bs4
-re
 pandas
 matplotlib
 datetime
