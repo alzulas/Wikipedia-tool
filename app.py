@@ -67,32 +67,7 @@ def grab_all_history(url, topic, df_all_history):
                             return(df_all_history)
                     if str(a_tag).__contains__('mw-userlink'):
                         line_for_append.append(a_tag.text)
-                for span_tag in li_tag.find_all('span'):
-                    if str(span_tag).__contains__('data-mw-bytes'):
-                        line_for_append.append(span_tag.text)
-                    if str(span_tag).__contains__('mw-plusminus'):
-                        line_for_append.append(span_tag.text)
-                    if str(span_tag).__contains__('comment') and has_no_comment:
-                        line_for_append.append(span_tag.text)
-                        has_no_comment = False
-                    if str(span_tag).__contains__('mw-tag-marker'):
-                        if first_tag_comment:
-                            first_tag_comment = False
-                        else:
-                            splits = re.split('>', str(span_tag))
-                            if str(span_tag).__contains__('href'):
-                                tags.append(splits[-3][:-3])
-                            else:
-                                tags.append(splits[-2][:-6])
-                if has_no_comment:
-                    line_for_append.append("No comment")
-            line_for_append.append(tags)
-            if dif_url:
-                line_for_append.append(dif_url)
-            try:
-                df_all_history.loc[len(df_all_history)] = line_for_append
-            except:
-                continue
+                
         url = ''
         for a_tag in bs.find_all('a'):
             if str(a_tag).__contains__('mw-nextlink'):
