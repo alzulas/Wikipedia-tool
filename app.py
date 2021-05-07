@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 import re
 import pandas as pd
 import matplotlib.pyplot as plt
-from datetime import datetime
+from datetime import datetime, timedelta
 import seaborn as sns 
 from tqdm import tqdm
 
