@@ -120,7 +120,7 @@ def grab_all_history(url, topic, df_all_history):
 def index():
     allLinks = get_links()
     df_all_history = pd.DataFrame(columns=['Page', 'Topic', 'Date of Change', 'User', 'Bytes', 'Number of Changes', 'Comments', 'Tags', 'Link To Diff'])
-    for topic in tqdm(allLinks):
+    for topic in tqdm(allLinks[:20]):
         url = 'https://en.wikipedia.org/w/index.php?title=:' + topic[6:] + '&action=history'
         topic = topic[6:]
         df_all_history = pd.concat([df_all_history, grab_all_history(url, topic, df_all_history)])
