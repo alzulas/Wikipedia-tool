@@ -12,8 +12,6 @@ from urllib.request import urlopen
 from urllib.error import HTTPError
 from bs4 import BeautifulSoup
 import re
-import json
-import csv
 import pandas as pd
 import matplotlib.pyplot as plt
 from datetime import datetime
