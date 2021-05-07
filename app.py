@@ -64,7 +64,7 @@ def grab_all_history(url, topic, df_all_history):
                         line_for_append.append(a_tag.text)
                         latest_date = datetime.strptime(a_tag.text, '%H:%M, %d %B %Y')
                         if latest_date < yesterday:
-                            break
+                            return(df_all_history)
                     if str(a_tag).__contains__('mw-userlink'):
                         line_for_append.append(a_tag.text)
                 for span_tag in li_tag.find_all('span'):
@@ -93,7 +93,10 @@ def grab_all_history(url, topic, df_all_history):
                 df_all_history.loc[len(df_all_history)] = line_for_append
             except:
                 continue
-       
+        url = ''
+        for a_tag in bs.find_all('a'):
+            if str(a_tag).__contains__('mw-nextlink'):
+                url = 'https://en.wikipedia.org' + str(a_tag.attrs['href'])
     return(df_all_history)
 
 @app.route('/')
