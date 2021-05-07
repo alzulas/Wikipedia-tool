@@ -106,8 +106,8 @@ def index():
         shape_of_data = df_all_history.shape
         if shape_of_data[0] > 20:
             history_list = [df_all_history.columns.values.tolist()] + df_all_history.values.tolist()
-            return render_template('index.html', table_list=allLinks)
-    return render_template('index.html', table_list=allLinks)
+            return render_template('index.html', table_list=history_list)
+    return render_template('index.html', table_list=history_list)
 
 @app.route('/about')
 def about():
