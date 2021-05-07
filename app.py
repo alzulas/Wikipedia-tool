@@ -44,7 +44,7 @@ def get_links():
 @app.route('/')
 def index():
     links = get_links()
-    return render_template('index.html', links=links[:10])
+    return render_template('index.html')
 
 @app.route('/about')
 def about():
