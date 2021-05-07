@@ -42,7 +42,7 @@ def get_links():
 @app.route('/')
 def index():
     links = get_links()
-    return render_template('index.html')
+    return render_template('index.html', links=links)
 
 @app.route('/about')
 def about():
