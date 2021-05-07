@@ -124,11 +124,11 @@ def index():
     for topic in tqdm(allLinks):
         url = 'https://en.wikipedia.org/w/index.php?title=:' + topic[6:] + '&action=history'
         topic = topic[6:]
-        #df_all_history = pd.concat([df_all_history, grab_all_history(url, topic, df_all_history)])
-        #shape_of_data = df_all_history.shape
-        #if shape_of_data[0] > 20:
-        #    history_list = [df_all_history.columns.values.tolist()] + df_all_history.values.tolist()
-        #    break
+        df_all_history = pd.concat([df_all_history, grab_all_history(url, topic, df_all_history)])
+        shape_of_data = df_all_history.shape
+        if shape_of_data[0] > 20:
+            history_list = [df_all_history.columns.values.tolist()] + df_all_history.values.tolist()
+            break
     return render_template('index.html', table_list=allLinks)
 
 @app.route('/about')
