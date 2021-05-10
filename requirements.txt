@@ -13,4 +13,4 @@ datetime
 seaborn
 tqdm
 dill==0.3.3
-sklearn==0.24.0
+sklearn
