@@ -137,7 +137,7 @@ def check_dif(string_to_check):
             string_to_check = string_to_check.replace(item, "")
         except:
             print(string_to_check)
-    with open('gs_est.dill', 'rb') as f:
+    with open('tf_text_est.dill', 'rb') as f:
         predict_tf_text = dill.load(f)
         return(predict_tf_text.predict_proba([string_to_check]))
 
