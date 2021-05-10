@@ -44,6 +44,7 @@ def grab_all_history(url, topic, df_all_history):
     yesterday = datetime.now() - timedelta(days = 2)
     latest_date = datetime.now()
     while latest_date > yesterday:
+        full_diff = []
         html = urlopen(url)
         bs = BeautifulSoup(html, 'html.parser')
         for li_tag in bs.find_all('li'):
@@ -55,7 +56,6 @@ def grab_all_history(url, topic, df_all_history):
                 for a_tag in li_tag.find_all('a'):
                     if str(a_tag).__contains__('prev') and str(a_tag).__contains__('diff'):
                         dif_url = 'https://en.wikipedia.org' + str(a_tag.attrs['href'])
-                        full_diff = []
                         final_marker = ['','']
                         dif_html = urlopen(dif_url)
                         dif_bs = BeautifulSoup(dif_html, 'html.parser')
