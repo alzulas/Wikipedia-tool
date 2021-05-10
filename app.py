@@ -123,7 +123,7 @@ def grab_all_history(url, topic, df_all_history):
             if dif_url:
                 line_for_append.append(dif_url)
             diff_as_string = ''.join([str(elem) for elem in full_diff])
-            predict_diff = check_dif(diff_as_string)
+            #predict_diff = check_dif(diff_as_string)
             if predict_change_num:
                 if predict_comment[0][1] > 0.4:
                     try:
