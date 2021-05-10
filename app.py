@@ -55,7 +55,37 @@ def grab_all_history(url, topic, df_all_history):
                 for a_tag in li_tag.find_all('a'):
                     if str(a_tag).__contains__('prev') and str(a_tag).__contains__('diff'):
                         dif_url = 'https://en.wikipedia.org' + str(a_tag.attrs['href'])
+                        full_diff = []
                         final_marker = ['','']
+                        dif_html = urlopen(dif_url)
+                        dif_bs = BeautifulSoup(dif_html, 'html.parser')
+                        dif_table = dif_bs.findAll("table")
+                        for div in dif_table:
+                            rows = div.findAll('tr')
+                            for row in rows :
+                                diffs_list = []
+                                lineno = row.findAll('td', {"class": "diff-lineno"})
+                                if lineno:
+                                    for tds in row.findAll('td'):
+                                        if tds.text == '\xa0':
+                                            diffs_list.append(" ")
+                                        else:
+                                            diffs_list.append(" ")
+                                            diffs_list.append(tds.text)
+                                classes = row.findAll('td', {"class": ["diff-context", "diff-addedline", "diff-deletedline", "diff-empty"]})
+                                if classes:
+                                    for tds in row.findAll('td'):
+                                        if tds.text == '\xa0':
+                                            diffs_list.append(" ")
+                                        else:
+                                            diffs_list.append(tds.text)
+                                if diffs_list:
+                                    if len(diffs_list) == 3:
+                                        if diffs_list[0] == ' ':
+                                            diffs_list.insert(0, ' ')
+                                        else:
+                                            diffs_list.append(' ')
+                                    full_diff.append(diffs_list)
                     if str(a_tag).__contains__('mw-changeslist-date'):
                         line_for_append.append(a_tag.text)
                         latest_date = datetime.strptime(a_tag.text, '%H:%M, %d %B %Y')
@@ -67,8 +97,10 @@ def grab_all_history(url, topic, df_all_history):
                     if str(span_tag).__contains__('data-mw-bytes'):
                         line_for_append.append(span_tag.text)
                     if str(span_tag).__contains__('mw-plusminus'):
+                        predict_change_num = check_change(span_tag.text)
                         line_for_append.append(span_tag.text)
                     if str(span_tag).__contains__('comment') and has_no_comment:
+                        predict_comment = check_comments(span_tag.text)
                         line_for_append.append(span_tag.text)
                         has_no_comment = False
                     if str(span_tag).__contains__('mw-tag-marker'):
@@ -85,21 +117,54 @@ def grab_all_history(url, topic, df_all_history):
             line_for_append.append(tags)
             if dif_url:
                 line_for_append.append(dif_url)
-            try:
-                df_all_history.loc[len(df_all_history)] = line_for_append
-            except:
-                continue
+            predict_diff = check_dif(diff_as_string)
+            if predict_change_num:
+                if predict_comment[0][1] > 0.4:
+                    try:
+                        df_all_history.loc[len(df_all_history)] = line_for_append
+                    except:
+                        continue
         url = ''
         for a_tag in bs.find_all('a'):
             if str(a_tag).__contains__('mw-nextlink'):
                 url = 'https://en.wikipedia.org' + str(a_tag.attrs['href'])
     return(df_all_history)
 
+def check_dif(string_to_check):
+    for item in ['[', ']', '* ', "' '", 'Line ', ':']:
+        try:
+            string_to_check = string_to_check.replace(item, "")
+        except:
+            print(string_to_check)
+    with open('gs_est.dill', 'rb') as f:
+        predict_tf_text = dill.load(f)
+        return(predict_tf_text.predict_proba([string_to_check]))
+
+def check_change(change_num):
+    try:
+        if change_num[0] == '+':
+            num = int(change_num)
+            return(False)
+        elif change_num == '0':
+            num = int(change_num)
+            return(False)
+        else:
+            num = change_num[1:]
+            num = int(num) * -1
+            return(True)
+    except:
+        return(False)
+
+def check_comments(comment):
+    with open('tf_comments_est.dill', 'rb') as f:
+        predict_comment = dill.load(f)
+        return(predict_comment.predict_proba([comment]))
+
 @app.route('/')
 def index():
     allLinks = get_links()
     df_all_history = pd.DataFrame(columns=['Page', 'Topic', 'Date of Change', 'User', 'Bytes', 'Number of Changes', 'Comments', 'Tags', 'Link To Diff'])
-    for topic in tqdm(allLinks[:20]):
+    for topic in tqdm(allLinks):
         url = 'https://en.wikipedia.org/w/index.php?title=:' + topic[6:] + '&action=history'
         topic = topic[6:]
         df_all_history = pd.concat([df_all_history, grab_all_history(url, topic, df_all_history)])
