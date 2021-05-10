@@ -47,6 +47,7 @@ def grab_all_history(url, topic, df_all_history):
     page_no = 1
     yesterday = datetime.now() - timedelta(days = 2)
     latest_date = datetime.now()
+    predict_change_num = False
     while latest_date > yesterday:
         full_diff = []
         html = urlopen(url)
