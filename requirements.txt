@@ -13,5 +13,5 @@ matplotlib
 datetime
 seaborn
 tqdm
-dill
+dill==0.24.0
 sklearn
