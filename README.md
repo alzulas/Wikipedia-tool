@@ -4,4 +4,4 @@ This project is a part of a much larger project, the code for the machine learni
 
 This is a capstone project started for completion of the Data Incubator bootcamp. 
 
-This website shows what items from wikipedia's most controversaial pages are most likely to be reverted. Please see the other repository for more information about the future work here, or the websites about page for more information about the project. https://wikipedia-tool.herokuapp.com/about
+This website shows what items from wikipedia's most controversaial pages are most likely to be reverted. Please see the other repository for more information about the future work on this project, or the website's about page for more information about the project. https://wikipedia-tool.herokuapp.com/about
